@@ -28,6 +28,14 @@ go get -u github.com/a8m/syncmap
 
    See [testdata/gen.go](https://github.com/a8m/syncmap/blob/master/testdata/gen.go) for more examples.
    
+### How does it work?
+
+`syncmap` didn't copy the code of `sync/map.go` and replace its identifiers. Instead, it reads the `sync/map.go` from
+your `GOROOT`, parses it into an `*ast.File`, and runs a few mutators that bring it to the desired state.
+Check the [code](https://github.com/a8m/syncmap/blob/master/syncmap.go#L91) from for information.
+
+__How can we make sure it will continue to work?__ - I'm running the daily CI test on _TravisCI_.
+   
 ### Benchmarks
 Benchmark tests were taken from the `sync` package.
 ```
