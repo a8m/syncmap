@@ -1,17 +1,7 @@
-# syncmap
-
-<p align="center">
-	<br/>
-	<a href="https://godoc.org/github.com/a8m/syncmap">
-		<img src="https://img.shields.io/badge/api-reference-blue.svg?style=flat-square" alt="GoDoc">
-	</a>
-	<a href="LICENSE">
-		<img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="LICENSE">
-	</a>
-	<a href="https://travis-ci.org/a8m/syncmap">
-		<img src="https://img.shields.io/travis/a8m/syncmap.svg?style=flat-square" alt="Build Status">
-	</a>
-</p>
+# syncmap 
+![https://godoc.org/github.com/a8m/syncmap](https://img.shields.io/badge/api-reference-blue.svg?style=flat-square)
+![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
+![https://travis-ci.org/a8m/syncmap](https://img.shields.io/travis/a8m/syncmap.svg?style=flat-square)
 
 A __typed__ implementation of the Go `sync.Map` using code generation. 
 
