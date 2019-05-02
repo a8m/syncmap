@@ -1,5 +1,18 @@
 # syncmap
 
+<p align="center">
+	<br/>
+	<a href="https://godoc.org/github.com/a8m/syncmap">
+		<img src="https://img.shields.io/badge/api-reference-blue.svg?style=flat-square" alt="GoDoc">
+	</a>
+	<a href="LICENSE">
+		<img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="LICENSE">
+	</a>
+	<a href="https://travis-ci.org/a8m/syncmap">
+		<img src="https://img.shields.io/travis/a8m/syncmap.svg?style=flat-square" alt="Build Status">
+	</a>
+</p>
+
 A __typed__ implementation of the Go `sync.Map` using code generation. 
 
 ### Install
@@ -77,3 +90,8 @@ BenchmarkAdversarialDelete/*main.RWMutexMap-8       	20000000	        78.3 ns/op
 BenchmarkAdversarialDelete/*sync.Map-8              	20000000	        72.2 ns/op
 BenchmarkAdversarialDelete/*main.IntMap-8           	100000000	        14.2 ns/op <--
 ```
+
+
+## LICENSE
+I am providing code in the repository to you under MIT license. Because this is my personal repository, the license you receive to my code is from me and not my employer (Facebook)
+
