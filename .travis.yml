@@ -1,0 +1,10 @@
+sudo: required
+language: go
+
+go:
+  - "1.12.x"
+  - master
+
+script:
+  - go install;
+  - cd testdata; go generate; go test; go test -bench=.;
