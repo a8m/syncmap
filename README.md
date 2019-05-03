@@ -68,7 +68,7 @@ BenchmarkLoadOrStoreCollision/*main.IntMap-8        	500000000	        3.14 ns/o
 BenchmarkRange/*main.DeepCopyMap-8                  	  500000	        4479 ns/op
 BenchmarkRange/*main.RWMutexMap-8                   	   30000	        56834 ns/op
 BenchmarkRange/*sync.Map-8                          	  300000	        4464 ns/op
-BenchmarkRange/*main.IntMap-8                       	1000000000	      2.38 ns/op <--
+BenchmarkRange/*main.IntMap-8                       	1000000000	        2.38 ns/op <--
 
 BenchmarkAdversarialAlloc/*main.DeepCopyMap-8       	 2000000	        826 ns/op
 BenchmarkAdversarialAlloc/*main.RWMutexMap-8        	20000000	        73.6 ns/op
