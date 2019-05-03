@@ -75,10 +75,51 @@ BenchmarkAdversarialAlloc/*main.RWMutexMap-8        	20000000	        73.6 ns/op
 BenchmarkAdversarialAlloc/*sync.Map-8               	 5000000	        303 ns/op
 BenchmarkAdversarialAlloc/*main.IntMap-8            	10000000	        182 ns/op <--
 
-BenchmarkAdversarialDelete/*main.DeepCopyMap-8      	10000000	         204 ns/op
-BenchmarkAdversarialDelete/*main.RWMutexMap-8       	20000000	         78.3 ns/op
-BenchmarkAdversarialDelete/*sync.Map-8              	20000000	         72.2 ns/op
-BenchmarkAdversarialDelete/*main.IntMap-8           	100000000	         14.2 ns/op <--
+BenchmarkAdversarialDelete/*main.DeepCopyMap-8      	10000000	        204 ns/op
+BenchmarkAdversarialDelete/*main.RWMutexMap-8       	20000000	        78.3 ns/op
+BenchmarkAdversarialDelete/*sync.Map-8              	20000000	        72.2 ns/op
+BenchmarkAdversarialDelete/*main.IntMap-8           	100000000	        14.2 ns/op <--
+```
+
+Running benchmark with `-benchmem`
+```
+BenchmarkLoadMostlyHits/*main.DeepCopyMap-8         100000000	  12.7 ns/op	  7 B/op	  0 allocs/op
+BenchmarkLoadMostlyHits/*main.RWMutexMap-8          30000000	  53.6 ns/op	  7 B/op	  0 allocs/op
+BenchmarkLoadMostlyHits/*sync.Map-8                 100000000	  16.3 ns/op	  7 B/op	  0 allocs/op
+BenchmarkLoadMostlyHits/*main.IntMap-8              200000000	  6.02 ns/op	  0 B/op	  0 allocs/op <--
+
+BenchmarkLoadMostlyMisses/*main.DeepCopyMap-8       200000000	  7.99 ns/op	  7 B/op	  0 allocs/op
+BenchmarkLoadMostlyMisses/*main.RWMutexMap-8        30000000	  52.6 ns/op	  7 B/op	  0 allocs/op
+BenchmarkLoadMostlyMisses/*sync.Map-8               200000000	  8.87 ns/op	  7 B/op	  0 allocs/op
+BenchmarkLoadMostlyMisses/*main.IntMap-8            1000000000	  2.88 ns/op	  0 B/op	  0 allocs/op <--
+
+BenchmarkLoadOrStoreBalanced/*main.RWMutexMap-8     3000000	  357 ns/op	  71 B/op	  2 allocs/op
+BenchmarkLoadOrStoreBalanced/*sync.Map-8            3000000	  417 ns/op	  70 B/op	  3 allocs/op
+BenchmarkLoadOrStoreBalanced/*main.IntMap-8         5000000	  202 ns/op	  42 B/op	  1 allocs/op <--
+
+BenchmarkLoadOrStoreUnique/*main.RWMutexMap-8       2000000	  648 ns/op	  178 B/op	  2 allocs/op
+BenchmarkLoadOrStoreUnique/*sync.Map-8              2000000	  745 ns/op	  163 B/op	  4 allocs/op
+BenchmarkLoadOrStoreUnique/*main.IntMap-8           3000000	  368 ns/op	  74 B/op	  2 allocs/op <--
+
+BenchmarkLoadOrStoreCollision/*main.DeepCopyMap-8   300000000	  5.90 ns/op	  0 B/op	  0 allocs/op
+BenchmarkLoadOrStoreCollision/*main.RWMutexMap-8    20000000	  94.5 ns/op	  0 B/op	  0 allocs/op
+BenchmarkLoadOrStoreCollision/*sync.Map-8           200000000	  7.55 ns/op	  0 B/op	  0 allocs/op
+BenchmarkLoadOrStoreCollision/*main.IntMap-8        1000000000	  2.68 ns/op	  0 B/op	  0 allocs/op <--
+
+BenchmarkRange/*main.DeepCopyMap-8                  500000	  3376 ns/op	  0 B/op	  0 allocs/op
+BenchmarkRange/*main.RWMutexMap-8                   30000	  56675 ns/op	  16384 B/op	  1 allocs/op
+BenchmarkRange/*sync.Map-8                          500000	  3587 ns/op	  0 B/op	  0 allocs/op
+BenchmarkRange/*main.IntMap-8                       2000000000	  1.75 ns/op	  0 B/op	  0 allocs/op <--
+
+BenchmarkAdversarialAlloc/*main.DeepCopyMap-8       2000000	  761 ns/op	  535 B/op	  1 allocs/op
+BenchmarkAdversarialAlloc/*main.RWMutexMap-8        20000000	  67.9 ns/op	  8 B/op	  1 allocs/op
+BenchmarkAdversarialAlloc/*sync.Map-8               5000000	  264 ns/op	  51 B/op	  1 allocs/op
+BenchmarkAdversarialAlloc/*main.IntMap-8            10000000	  176 ns/op	  28 B/op	  0 allocs/op <--
+
+BenchmarkAdversarialDelete/*main.DeepCopyMap-8      10000000	  194 ns/op	  168 B/op	  1 allocs/op
+BenchmarkAdversarialDelete/*main.RWMutexMap-8       20000000	  76.9 ns/op	  25 B/op	  1 allocs/op
+BenchmarkAdversarialDelete/*sync.Map-8              20000000	  60.8 ns/op	  18 B/op	  1 allocs/op
+BenchmarkAdversarialDelete/*main.IntMap-8           100000000	  13.1 ns/op	  0 B/op	  0 allocs/op <--
 ```
 
 
