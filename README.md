@@ -2,6 +2,7 @@
 ![https://godoc.org/github.com/a8m/syncmap](https://img.shields.io/badge/api-reference-blue.svg?style=flat-square)
 ![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
 [![Build Status](https://travis-ci.com/a8m/syncmap.svg?token=ckAPcX3LvhP9wJPS6sgW&branch=master)](https://travis-ci.com/a8m/syncmap)
+[![Go Report Card](https://goreportcard.com/badge/github.com/a8m/syncmap)](https://goreportcard.com/report/github.com/a8m/syncmap)
 
 A __typed__ implementation of the Go `sync.Map` using code generation. 
 
