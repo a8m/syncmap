@@ -211,7 +211,7 @@ func (g *Generator) Funcs() map[string]func(*ast.FuncDecl) {
 	}
 }
 
-// replaceKey replaces all `interface{}` occurrences in the given Node with the key node. 
+// replaceKey replaces all `interface{}` occurrences in the given Node with the key node.
 func (g *Generator) replaceKey(n ast.Node) { replaceIface(n, g.key) }
 
 // replaceValue replaces all `interface{}` occurrences in the given Node with the value node.
