@@ -13,3 +13,8 @@ package main
 //go:generate syncmap -name StructMap "map[struct{ Name string }]struct{ Age int }"
 
 //go:generate syncmap -name IntPtrs map[*int]*int
+
+//go:generate syncmap -name StringByteChan "map[string]chan []byte"
+
+//go:generate syncmap -name StringIntChan "map[string]chan int"
+
