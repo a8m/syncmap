@@ -317,6 +317,11 @@ func setPos(n ast.Node, p token.Pos) {
 	case *ast.StarExpr:
 		n.Star = p
 		setPos(n.X, p)
+	case *ast.ChanType:
+		setPos(n.Value, p)
+	case *ast.ParenExpr:
+		setPos(n.X, p)
+		
 	default:
 		panic(fmt.Sprintf("unknown type: %v", n))
 	}
