@@ -104,7 +104,7 @@ func TestStringByteChan(t *testing.T) {
 	if lr != r {
 		t.Fatal("loaded value should be the same")
 	}
-	s, _ := m.LoadOrStore("s",  make(chan []byte))
+	s, _ := m.LoadOrStore("s", make(chan []byte))
 	kv := map[string](chan []byte){"r": r, "s": s}
 	m.Range(func(key string, value chan []byte) bool {
 		v, ok := kv[key]
@@ -118,8 +118,6 @@ func TestStringByteChan(t *testing.T) {
 		return true
 	})
 }
-
-
 
 func TestStringIntChan(t *testing.T) {
 	var m StringIntChan
@@ -144,7 +142,7 @@ func TestStringIntChan(t *testing.T) {
 	if lr != r {
 		t.Fatal("loaded value should be the same")
 	}
-	s, _ := m.LoadOrStore("s",  make(chan int))
+	s, _ := m.LoadOrStore("s", make(chan int))
 	kv := map[string](chan int){"r": r, "s": s}
 	m.Range(func(key string, value chan int) bool {
 		v, ok := kv[key]
@@ -158,4 +156,3 @@ func TestStringIntChan(t *testing.T) {
 		return true
 	})
 }
-
