@@ -321,7 +321,6 @@ func setPos(n ast.Node, p token.Pos) {
 		setPos(n.Value, p)
 	case *ast.ParenExpr:
 		setPos(n.X, p)
-		
 	default:
 		panic(fmt.Sprintf("unknown type: %v", n))
 	}
