@@ -19,14 +19,18 @@ go get -u github.com/a8m/syncmap
   $ syncmap -name IntMap "map[int]int"
   $ syncmap -name RequestMap -pkg mypkg "map[string]*http.Request"
   ```
+  Or:
+  ```bash
+  $ go run github.com/a8m/syncmap -name IntMap "map[int]int"
+  ```
   
 2. Using `go generate`.
     
    - Add a directive with map definition:
      ```go
-     //go:generate syncmap -name WriterMap map[string]io.Writer
+     //go:generate go run github.com/a8m/syncmap -name WriterMap map[string]io.Writer
    
-     //go:generate syncmap -name Requests map[string]*http.Request
+     //go:generate go run github.com/a8m/syncmap -name Requests map[string]*http.Request
      ```
    - Then, run `go generate` on this package. 
 

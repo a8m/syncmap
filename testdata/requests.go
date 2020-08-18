@@ -267,8 +267,9 @@ func (e *entryRequests) tryLoadOrStore(i *http.Request) (actual *http.Request, l
 	}
 }
 
-// Delete deletes the value for a key.
-func (m *Requests) Delete(key string) {
+// LoadAndDelete deletes the value for a key, returning the previous value if any.
+// The loaded result reports whether the key was present.
+func (m *Requests) LoadAndDelete(key string) (value *http.Request, loaded bool) {
 	read, _ := m.read.Load().(readOnlyRequests)
 	e, ok := read.m[key]
 	if !ok && read.amended {
@@ -276,23 +277,33 @@ func (m *Requests) Delete(key string) {
 		read, _ = m.read.Load().(readOnlyRequests)
 		e, ok = read.m[key]
 		if !ok && read.amended {
-			delete(m.dirty, key)
+			e, ok = m.dirty[key]
+			// Regardless of whether the entry was present, record a miss: this key
+			// will take the slow path until the dirty map is promoted to the read
+			// map.
+			m.missLocked()
 		}
 		m.mu.Unlock()
 	}
 	if ok {
-		e.delete()
+		return e.delete()
 	}
+	return value, false
 }
 
-func (e *entryRequests) delete() (hadValue bool) {
+// Delete deletes the value for a key.
+func (m *Requests) Delete(key string) {
+	m.LoadAndDelete(key)
+}
+
+func (e *entryRequests) delete() (value *http.Request, ok bool) {
 	for {
 		p := atomic.LoadPointer(&e.p)
 		if p == nil || p == expungedRequests {
-			return false
+			return value, false
 		}
 		if atomic.CompareAndSwapPointer(&e.p, p, nil) {
-			return true
+			return *(**http.Request)(p), true
 		}
 	}
 }

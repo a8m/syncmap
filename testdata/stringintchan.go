@@ -270,8 +270,9 @@ func (e *entryStringIntChan) tryLoadOrStore(i chan int) (actual chan int, loaded
 	}
 }
 
-// Delete deletes the value for a key.
-func (m *StringIntChan) Delete(key string) {
+// LoadAndDelete deletes the value for a key, returning the previous value if any.
+// The loaded result reports whether the key was present.
+func (m *StringIntChan) LoadAndDelete(key string) (value chan int, loaded bool) {
 	read, _ := m.read.Load().(readOnlyStringIntChan)
 	e, ok := read.m[key]
 	if !ok && read.amended {
@@ -279,23 +280,33 @@ func (m *StringIntChan) Delete(key string) {
 		read, _ = m.read.Load().(readOnlyStringIntChan)
 		e, ok = read.m[key]
 		if !ok && read.amended {
-			delete(m.dirty, key)
+			e, ok = m.dirty[key]
+			// Regardless of whether the entry was present, record a miss: this key
+			// will take the slow path until the dirty map is promoted to the read
+			// map.
+			m.missLocked()
 		}
 		m.mu.Unlock()
 	}
 	if ok {
-		e.delete()
+		return e.delete()
 	}
+	return value, false
 }
 
-func (e *entryStringIntChan) delete() (hadValue bool) {
+// Delete deletes the value for a key.
+func (m *StringIntChan) Delete(key string) {
+	m.LoadAndDelete(key)
+}
+
+func (e *entryStringIntChan) delete() (value chan int, ok bool) {
 	for {
 		p := atomic.LoadPointer(&e.p)
 		if p == nil || p == expungedStringIntChan {
-			return false
+			return value, false
 		}
 		if atomic.CompareAndSwapPointer(&e.p, p, nil) {
-			return true
+			return *(*(chan int))(p), true
 		}
 	}
 }

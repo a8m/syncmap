@@ -267,8 +267,9 @@ func (e *entryWriterMap) tryLoadOrStore(i io.Writer) (actual io.Writer, loaded, 
 	}
 }
 
-// Delete deletes the value for a key.
-func (m *WriterMap) Delete(key string) {
+// LoadAndDelete deletes the value for a key, returning the previous value if any.
+// The loaded result reports whether the key was present.
+func (m *WriterMap) LoadAndDelete(key string) (value io.Writer, loaded bool) {
 	read, _ := m.read.Load().(readOnlyWriterMap)
 	e, ok := read.m[key]
 	if !ok && read.amended {
@@ -276,23 +277,33 @@ func (m *WriterMap) Delete(key string) {
 		read, _ = m.read.Load().(readOnlyWriterMap)
 		e, ok = read.m[key]
 		if !ok && read.amended {
-			delete(m.dirty, key)
+			e, ok = m.dirty[key]
+			// Regardless of whether the entry was present, record a miss: this key
+			// will take the slow path until the dirty map is promoted to the read
+			// map.
+			m.missLocked()
 		}
 		m.mu.Unlock()
 	}
 	if ok {
-		e.delete()
+		return e.delete()
 	}
+	return value, false
 }
 
-func (e *entryWriterMap) delete() (hadValue bool) {
+// Delete deletes the value for a key.
+func (m *WriterMap) Delete(key string) {
+	m.LoadAndDelete(key)
+}
+
+func (e *entryWriterMap) delete() (value io.Writer, ok bool) {
 	for {
 		p := atomic.LoadPointer(&e.p)
 		if p == nil || p == expungedWriterMap {
-			return false
+			return value, false
 		}
 		if atomic.CompareAndSwapPointer(&e.p, p, nil) {
-			return true
+			return *(*io.Writer)(p), true
 		}
 	}
 }

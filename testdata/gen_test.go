@@ -50,7 +50,10 @@ func TestRequests(t *testing.T) {
 	if !ok {
 		t.Fatal("value should be existed")
 	}
-	m.Delete("r")
+	v, ok := m.LoadAndDelete("r")
+	if !ok || v == nil {
+		t.Fatal("value should be existed")
+	}
 	_, ok = m.Load("r")
 	if ok {
 		t.Fatal("value should not be existed")
