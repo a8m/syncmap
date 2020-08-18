@@ -266,8 +266,9 @@ func (e *entryStructMap) tryLoadOrStore(i struct{ Age int }) (actual struct{ Age
 	}
 }
 
-// Delete deletes the value for a key.
-func (m *StructMap) Delete(key struct{ Name string }) {
+// LoadAndDelete deletes the value for a key, returning the previous value if any.
+// The loaded result reports whether the key was present.
+func (m *StructMap) LoadAndDelete(key struct{ Name string }) (value struct{ Age int }, loaded bool) {
 	read, _ := m.read.Load().(readOnlyStructMap)
 	e, ok := read.m[key]
 	if !ok && read.amended {
@@ -275,23 +276,33 @@ func (m *StructMap) Delete(key struct{ Name string }) {
 		read, _ = m.read.Load().(readOnlyStructMap)
 		e, ok = read.m[key]
 		if !ok && read.amended {
-			delete(m.dirty, key)
+			e, ok = m.dirty[key]
+			// Regardless of whether the entry was present, record a miss: this key
+			// will take the slow path until the dirty map is promoted to the read
+			// map.
+			m.missLocked()
 		}
 		m.mu.Unlock()
 	}
 	if ok {
-		e.delete()
+		return e.delete()
 	}
+	return value, false
 }
 
-func (e *entryStructMap) delete() (hadValue bool) {
+// Delete deletes the value for a key.
+func (m *StructMap) Delete(key struct{ Name string }) {
+	m.LoadAndDelete(key)
+}
+
+func (e *entryStructMap) delete() (value struct{ Age int }, ok bool) {
 	for {
 		p := atomic.LoadPointer(&e.p)
 		if p == nil || p == expungedStructMap {
-			return false
+			return value, false
 		}
 		if atomic.CompareAndSwapPointer(&e.p, p, nil) {
-			return true
+			return *(*struct{ Age int })(p), true
 		}
 	}
 }

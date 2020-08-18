@@ -192,6 +192,11 @@ func (g *Generator) Funcs() map[string]func(*ast.FuncDecl) {
 			g.renameTuple(f.Type.Params)
 			g.replaceValue(f.Type.Results)
 		},
+		"LoadAndDelete": func(f *ast.FuncDecl) {
+			g.replaceKey(f.Type.Params)
+			g.replaceValue(f.Type.Results)
+			renameNil(f.Body, f.Type.Results.List[0].Names[0].Name)
+		},
 		"tryLoadOrStore": func(f *ast.FuncDecl) {
 			g.replaceValue(f)
 			renameNil(f.Body, f.Type.Results.List[0].Names[0].Name)
@@ -199,12 +204,15 @@ func (g *Generator) Funcs() map[string]func(*ast.FuncDecl) {
 		"Range": func(f *ast.FuncDecl) {
 			g.renameTuple(f.Type.Params.List[0].Type.(*ast.FuncType).Params)
 		},
-		"Delete":           func(f *ast.FuncDecl) { g.replaceKey(f) },
-		"newEntry":         func(f *ast.FuncDecl) { g.replaceValue(f) },
-		"tryStore":         func(f *ast.FuncDecl) { g.replaceValue(f) },
-		"dirtyLocked":      func(f *ast.FuncDecl) { g.replaceKey(f) },
-		"storeLocked":      func(f *ast.FuncDecl) { g.replaceValue(f) },
-		"delete":           nop,
+		"Delete":      func(f *ast.FuncDecl) { g.replaceKey(f) },
+		"newEntry":    func(f *ast.FuncDecl) { g.replaceValue(f) },
+		"tryStore":    func(f *ast.FuncDecl) { g.replaceValue(f) },
+		"dirtyLocked": func(f *ast.FuncDecl) { g.replaceKey(f) },
+		"storeLocked": func(f *ast.FuncDecl) { g.replaceValue(f) },
+		"delete": func(f *ast.FuncDecl) {
+			g.replaceValue(f)
+			renameNil(f.Body, f.Type.Results.List[0].Names[0].Name)
+		},
 		"missLocked":       nop,
 		"unexpungeLocked":  nop,
 		"tryExpungeLocked": nop,
