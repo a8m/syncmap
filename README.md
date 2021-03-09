@@ -9,7 +9,7 @@ A __typed__ implementation of the Go `sync.Map` using code generation.
 ### Install
 
 ```
-go get -u github.com/a8m/syncmap
+go get -u github.com/a8m/syncmap@master
 ```
 
 ### Examples:
