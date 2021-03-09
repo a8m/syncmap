@@ -277,6 +277,7 @@ func (m *IntMap) LoadAndDelete(key int) (value int, loaded bool) {
 		e, ok = read.m[key]
 		if !ok && read.amended {
 			e, ok = m.dirty[key]
+			delete(m.dirty, key)
 			// Regardless of whether the entry was present, record a miss: this key
 			// will take the slow path until the dirty map is promoted to the read
 			// map.

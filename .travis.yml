@@ -2,11 +2,9 @@ sudo: required
 language: go
 
 go:
-  - "1.14.x"
   - "1.15.x"
+  - "1.16.x"
   - master
 
 script:
-  - go get -u golang.org/x/tools/cmd/goimports
-  - go install;
   - cd testdata; go generate; go test; go test -bench=.;
