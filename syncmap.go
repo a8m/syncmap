@@ -245,6 +245,9 @@ func replaceIface(n ast.Node, s string) {
 		if it, ok := n.(*ast.InterfaceType); ok {
 			c.Replace(expr(s, it.Interface))
 		}
+		if it, ok := n.(*ast.Ident); ok && it.Name == "any" {
+			c.Replace(expr(s, it.Pos()))
+		}
 		return true
 	}, nil)
 }
